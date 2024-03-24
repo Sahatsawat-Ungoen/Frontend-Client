@@ -162,7 +162,7 @@ const brandsLinks = [
   },
 ];
 
-export default function AddminDashboard() {
+export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (

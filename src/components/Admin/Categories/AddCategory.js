@@ -25,7 +25,7 @@ export default function CategoryToAdd() {
     const newFile = event.target.files[0];
     //validation
 
-    if (newFile?.size > 1000000) {
+    if (newFile?.size > 10000000) {
       setFileErr(`${newFile?.name} is too large`);
     }
     if (!newFile?.type?.startsWith("image/")) {
@@ -120,7 +120,7 @@ export default function CategoryToAdd() {
                         </label>
                       </div>
                       <p className="text-xs text-gray-500">
-                        PNG, JPG, GIF up to 1MB
+                        PNG, JPG up to 10MB
                       </p>
                     </div>
                   </div>

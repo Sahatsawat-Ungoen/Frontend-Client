@@ -39,7 +39,7 @@ const Products = ({ products }) => {
                       </span>
                     </p>
                   </a>
-                  <a
+                  {/* <a
                     className="ml-auto mr-2 flex items-center justify-center w-12 h-12 bg-blue-300 hover:bg-blue-400 rounded-md"
                     href="#">
                     <svg
@@ -58,7 +58,7 @@ const Products = ({ products }) => {
                         fill="white"
                       />
                     </svg>
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

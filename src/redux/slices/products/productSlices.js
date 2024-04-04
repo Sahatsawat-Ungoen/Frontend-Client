@@ -75,7 +75,7 @@ export const createProductAction = createAsyncThunk(
   }
 );
 
-//create product action
+//update product action
 export const updateProductAction = createAsyncThunk(
   "product/update",
   async (payload, { rejectWithValue, getState, dispatch }) => {

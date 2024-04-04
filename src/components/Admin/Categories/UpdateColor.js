@@ -5,39 +5,38 @@ import ErrorComponent from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import {
-  fetchCategoryAction,
-  updateCategoryAction,
-} from "../../../redux/slices/categories/categoriesSlice";
+  fetchColorAction,
+  updateColorAction,
+} from "../../../redux/slices/categories/colorsSlice";
 
-export default function UpdateCategory() {
+export default function UpdateColor() {
   //dispatch
   const dispatch = useDispatch();
   //get id from params
   const { id } = useParams();
   //fetch single product
   useEffect(() => {
-    dispatch(fetchCategoryAction(id));
+    dispatch(fetchColorAction(id));
   }, [id, dispatch]);
   //select data from store
-  const { category, loading, error, isUpdated } = useSelector(
-    (state) => state?.categories
+  const { color, loading, error, isUpdated } = useSelector(
+    (state) => state?.colors
   );
   //---form data---
   const [formData, setFormData] = useState({
-    name: category?.category?.name,
+    name: color?.color?.name,
   });
   //---onChange---
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      updateCategoryAction({
-        id: category?.category?._id,
+      updateColorAction({
+        id: color?.color?._id,
         name: formData?.name,
       })
     );
@@ -49,7 +48,7 @@ export default function UpdateCategory() {
   return (
     <>
       {error && <ErrorComponent message={error?.message} />}
-      {isUpdated && <SuccessMsg message="Category updated successfully" />}
+      {isUpdated && <SuccessMsg message="Color updated successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <svg
@@ -67,7 +66,7 @@ export default function UpdateCategory() {
             />
           </svg>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Update Category
+            Update Color
           </h2>
         </div>
 
@@ -99,7 +98,7 @@ export default function UpdateCategory() {
                     type="submit"
                     className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    Update Category
+                    Update Color
                   </button>
                 )}
               </div>

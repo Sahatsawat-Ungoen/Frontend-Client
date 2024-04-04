@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchBrandsAction } from "../../../redux/slices/categories/brandsSlice";
+import {
+  fetchBrandsAction,
+  deleteBrandAction,
+} from "../../../redux/slices/categories/brandsSlice";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
@@ -26,8 +29,12 @@ export default function BrandsList() {
     error,
   } = useSelector((state) => state?.brands);
 
-  //delete category handler
-  const deleteCategoryHandler = (id) => {};
+  //delete brand handler
+  const deleteBrandHandler = (id) => {
+    dispatch(deleteBrandAction(id));
+    //reload
+    window.location.reload();
+  };
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -76,6 +83,18 @@ export default function BrandsList() {
                       >
                         Created At
                       </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Edit
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Delete
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
@@ -94,20 +113,22 @@ export default function BrandsList() {
                           {new Date(brand?.createdAt).toLocaleDateString()}
                         </td>
                         {/* edit icon */}
-                        {/* <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                           <Link
-                            to={`/admin/edit-category/${category?._id}`}
+                            to={`/admin/edit-brand/${brand?._id}`}
                             state={{
-                              categoryName: category?.name,
+                              categoryName: brand?.name,
                             }}
-                            className="text-indigo-600 hover:text-indigo-900">
+                            className="text-indigo-600 hover:text-indigo-900"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke-width="1.5"
                               stroke="currentColor"
-                              class="w-6 h-6">
+                              class="w-6 h-6"
+                            >
                               <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -115,21 +136,24 @@ export default function BrandsList() {
                               />
                             </svg>
 
-                            <span className="sr-only">, {category?.name}</span>
+                            <span className="sr-only">, {brand?.name}</span>
                           </Link>
-                        </td> */}
+                        </td>
+
                         {/* delete icon */}
-                        {/* <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                           <button
-                            onClick={() => deleteCategoryHandler(category?._id)}
-                            className="text-indigo-600 hover:text-indigo-900">
+                            onClick={() => deleteBrandHandler(brand?._id)}
+                            className="text-indigo-600 hover:text-indigo-900"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke-width="1.5"
                               stroke="currentColor"
-                              class="w-6 h-6">
+                              class="w-6 h-6"
+                            >
                               <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -137,7 +161,7 @@ export default function BrandsList() {
                               />
                             </svg>
                           </button>
-                        </td> */}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

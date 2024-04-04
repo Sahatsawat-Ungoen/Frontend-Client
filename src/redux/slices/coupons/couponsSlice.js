@@ -50,7 +50,7 @@ export const createCouponAction = createAsyncThunk(
   }
 );
 
-//create coupon action
+//update coupon action
 export const updateCouponAction = createAsyncThunk(
   "coupons/update",
   async (

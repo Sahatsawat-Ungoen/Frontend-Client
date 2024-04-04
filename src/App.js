@@ -36,6 +36,8 @@ import ProductUpdate from "./components/Admin/Products/ProuductUpdate";
 import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 import ColorsList from "./components/Admin/Categories/ColorsList";
 import { useDispatch, useSelector } from "react-redux";
+import UpdateColor from "./components/Admin/Categories/UpdateColor";
+import UpdateBrand from "./components/Admin/Categories/UpdateBrand";
 
 const App = () => {
   return (
@@ -139,6 +141,14 @@ const App = () => {
               </AdminRoutes>
             }
           />
+          <Route
+            path="edit-brand/:id"
+            element={
+              <AdminRoutes>
+                <UpdateBrand />
+              </AdminRoutes>
+            }
+          />
           <Route path="all-brands" element={<BrandsList />} />
           {/* color category */}
           <Route
@@ -146,6 +156,14 @@ const App = () => {
             element={
               <AdminRoutes>
                 <AddColor />
+              </AdminRoutes>
+            }
+          />
+          <Route
+            path="edit-color/:id"
+            element={
+              <AdminRoutes>
+                <UpdateColor />
               </AdminRoutes>
             }
           />

@@ -56,6 +56,75 @@ export const fetchColorsAction = createAsyncThunk(
     }
   }
 );
+//fetch Color action
+export const fetchColorAction = createAsyncThunk(
+  "colors/single",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.get(`${baseURL}/colors/${id}`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+//update Color action
+export const updateColorAction = createAsyncThunk(
+  "colors/update",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    console.log(payload);
+    try {
+      const { name, id } = payload;
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${baseURL}/colors/${id}`,
+        {
+          name,
+        },
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//Delete color action
+export const deleteColorAction = createAsyncThunk(
+  "color/delete",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+      //Token - Authenticated
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.delete(
+        `${baseURL}/colors/${id}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 //slice
 const colorsSlice = createSlice({
   name: "colors",
@@ -90,6 +159,46 @@ const colorsSlice = createSlice({
       state.loading = false;
       state.colors = null;
       state.isAdded = false;
+      state.error = action.payload;
+    });
+    //fetch single
+    builder.addCase(fetchColorAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchColorAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.color = action.payload;
+    });
+    builder.addCase(fetchColorAction.rejected, (state, action) => {
+      state.loading = false;
+      state.color = null;
+      state.error = action.payload;
+    });
+    //update
+    builder.addCase(updateColorAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateColorAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.color = action.payload;
+      state.isUpdated = true;
+    });
+    builder.addCase(updateColorAction.rejected, (state, action) => {
+      state.loading = false;
+      state.color = null;
+      state.isUpdated = false;
+      state.error = action.payload;
+    });
+    //delete
+    builder.addCase(deleteColorAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteColorAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isDelete = true;
+    });
+    builder.addCase(deleteColorAction.rejected, (state, action) => {
+      state.loading = false;
       state.error = action.payload;
     });
     //reset error action

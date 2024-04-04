@@ -61,6 +61,76 @@ export const fetchCategoriesAction = createAsyncThunk(
     }
   }
 );
+
+//fetch Category action
+export const fetchCategoryAction = createAsyncThunk(
+  "category/single",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.get(`${baseURL}/categories/${id}`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+//update Category action
+export const updateCategoryAction = createAsyncThunk(
+  "category/update",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    console.log(payload);
+    try {
+      const { name, id } = payload;
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${baseURL}/categories/${id}`,
+        {
+          name,
+        },
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//Delete coupon action
+export const deleteCategoriesAction = createAsyncThunk(
+  "category/delete",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+      //Token - Authenticated
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.delete(
+        `${baseURL}/categories/${id}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 //slice
 const categorySlice = createSlice({
   name: "categories",
@@ -93,6 +163,46 @@ const categorySlice = createSlice({
     builder.addCase(fetchCategoriesAction.rejected, (state, action) => {
       state.loading = false;
       state.categories = null;
+      state.error = action.payload;
+    });
+    //fetch single
+    builder.addCase(fetchCategoryAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchCategoryAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.category = action.payload;
+    });
+    builder.addCase(fetchCategoryAction.rejected, (state, action) => {
+      state.loading = false;
+      state.category = null;
+      state.error = action.payload;
+    });
+    //update
+    builder.addCase(updateCategoryAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateCategoryAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.category = action.payload;
+      state.isUpdated = true;
+    });
+    builder.addCase(updateCategoryAction.rejected, (state, action) => {
+      state.loading = false;
+      state.category = null;
+      state.isUpdated = false;
+      state.error = action.payload;
+    });
+    //delete
+    builder.addCase(deleteCategoriesAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteCategoriesAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isDelete = true;
+    });
+    builder.addCase(deleteCategoriesAction.rejected, (state, action) => {
+      state.loading = false;
       state.error = action.payload;
     });
     //Reset err
